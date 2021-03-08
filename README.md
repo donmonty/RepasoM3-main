@@ -1,4 +1,4 @@
-# Checkpoint M3
+# Repaso M3
 
 _We start the M3 checkpoint. As was customary in these last tasks, we started with a paragraph translated in Google Translate LOL. Successes!_
 
