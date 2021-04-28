@@ -2,15 +2,17 @@
   "name": "cp-m2-practice",
   "version": "1.0.0",
   "description": "just for practice",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
-    "test": "mocha ./tests/*.spec.js -w"
+    "test": "mocha ./tests/*.spec.js",
+    "start": "node src/app.js "
   },
   "author": "JavierBalonga",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.13.0",
-    "express": "^4.12.4"
+    "express": "^4.12.4",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "chai": "^4.1.1",
