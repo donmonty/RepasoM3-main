@@ -38,9 +38,17 @@ const model = {
 
     // If selector is a status
     if (statusCodes.includes(selector)) {
+      // Save deleted appointment(s) for later
+      const deleted = client.filter(appointment => appointment.status === selector)
+      // Delete appointment(s)
       this.clients[name] = client.filter(appointment => appointment.status !== selector)
+      return deleted;
     } else { // selector is a date
+      // Save deleted appointment for later
+      const deleted = client.filter(appointment => appointment.date === selector)
+      // Delete appointment
       this.clients[name] = client.filter(appointment => appointment.date !== selector)
+      return deleted;
     }
   },
   getAppointments: function (name, status) {
@@ -143,7 +151,7 @@ function deleteAppointment(req, res) {
   const date = req.query.date;
 
   const client = model.clients[name];
-  const statusCodes = ["pending", "attended", "expired", "cancelled"];
+  //const statusCodes = ["pending", "attended", "expired", "cancelled"];
 
   // console.log("Name: ", name);
   // console.log("Date: ", date);
@@ -152,22 +160,30 @@ function deleteAppointment(req, res) {
   // Respond 400 if client does not exist
   if (!client) return res.status(400).send('the client does not exist');
 
+  // Save deleted appointmens for later
+  const deleted = model.erase(name, date)
+  return res.status(200).send(deleted);
+
+  // Alternative method: for Javascript practice!
+  //------------------------------------------------------------------------------------------
   // Check if 'date' parameter is a date or a status
-  if (statusCodes.includes(date)) { // It is a status code
-    // Save deleted appointmens for later
-    const deleted = model.clients[name].filter(appointment => appointment.status === date);
-    // Eliminate all the client's appointments that have the given status code
-    model.clients[name] = model.clients[name].filter(appointment => appointment.status !== date);
-    // Return deleted appointments
-    return res.status(200).send(deleted);
-  }
+  // if (statusCodes.includes(date)) { // It is a status code
+  //   // Save deleted appointmens for later
+  //   const deleted = model.clients[name].filter(appointment => appointment.status === date);
+    
+
+  //   // Eliminate all the client's appointments that have the given status code
+  //   model.clients[name] = model.clients[name].filter(appointment => appointment.status !== date);
+  //   // Return deleted appointments
+  //   return res.status(200).send(deleted);
+  //}
 
   // Date is a date
   // Save appointment to delete for later
-  const deleted = model.clients[name].filter(appointment => appointment.date === date);
-  // Delete appointment
-  model.clients[name] = model.clients[name].filter(appointment => appointment.date !== date);
-  res.status(200).send(deleted);
+  // const deleted = model.clients[name].filter(appointment => appointment.date === date);
+  // // Delete appointment
+  // model.clients[name] = model.clients[name].filter(appointment => appointment.date !== date);
+  // res.status(200).send(deleted);
 
 }
 
